@@ -1,0 +1,12 @@
+C:\Users\Computer\Documents\Education\GorselProgramlama2\GpAllWeeks\Week6\bin\Debug\Week6.exe.config
+C:\Users\Computer\Documents\Education\GorselProgramlama2\GpAllWeeks\Week6\bin\Debug\Week6.exe
+C:\Users\Computer\Documents\Education\GorselProgramlama2\GpAllWeeks\Week6\bin\Debug\Week6.pdb
+C:\Users\Computer\Documents\Education\GorselProgramlama2\GpAllWeeks\Week6\obj\Debug\Week6.csproj.AssemblyReference.cache
+C:\Users\Computer\Documents\Education\GorselProgramlama2\GpAllWeeks\Week6\obj\Debug\Week6.csproj.SuggestedBindingRedirects.cache
+C:\Users\Computer\Documents\Education\GorselProgramlama2\GpAllWeeks\Week6\obj\Debug\Week6.Properties.Resources.resources
+C:\Users\Computer\Documents\Education\GorselProgramlama2\GpAllWeeks\Week6\obj\Debug\Week6.csproj.GenerateResource.cache
+C:\Users\Computer\Documents\Education\GorselProgramlama2\GpAllWeeks\Week6\obj\Debug\Week6.csproj.CoreCompileInputs.cache
+C:\Users\Computer\Documents\Education\GorselProgramlama2\GpAllWeeks\Week6\obj\Debug\Week6.exe
+C:\Users\Computer\Documents\Education\GorselProgramlama2\GpAllWeeks\Week6\obj\Debug\Week6.pdb
+C:\Users\Computer\Documents\Education\GorselProgramlama2\GpAllWeeks\Week6\obj\Debug\Week6.Box.resources
+C:\Users\Computer\Documents\Education\GorselProgramlama2\GpAllWeeks\Week6\obj\Debug\Week6.Form1.resources
