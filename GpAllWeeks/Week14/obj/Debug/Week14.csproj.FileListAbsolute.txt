@@ -1,0 +1,15 @@
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week14\bin\Debug\Week14.exe.config
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week14\bin\Debug\Week14.exe
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week14\bin\Debug\Week14.pdb
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week14\obj\Debug\Week14.csproj.AssemblyReference.cache
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week14\obj\Debug\Week14.csproj.SuggestedBindingRedirects.cache
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week14\obj\Debug\Week14.Form1.resources
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week14\obj\Debug\Week14.Properties.Resources.resources
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week14\obj\Debug\Week14.csproj.GenerateResource.cache
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week14\obj\Debug\Week14.csproj.CoreCompileInputs.cache
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week14\obj\Debug\Week14.exe
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week14\obj\Debug\Week14.pdb
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week14\bin\Debug\System.Data.OleDb.dll
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week14\bin\Debug\System.Data.OleDb.xml
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week14\obj\Debug\Week14.csproj.CopyComplete
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week14\obj\Debug\Week14.csproj.ResolveComReference.cache

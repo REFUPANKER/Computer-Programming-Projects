@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Computer\\Documents\\Education\\GorselProgramlama2\\GpAllWeeks\\LinePuzzleGame\\LinePuzzleGame.csproj": {}
+    "C:\\Users\\Computer\\Documents\\Education\\GorselProgramlama2\\Computer-Programming-Projects\\GpAllWeeks\\LinePuzzleGame\\LinePuzzleGame.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Computer\\Documents\\Education\\GorselProgramlama2\\GpAllWeeks\\LinePuzzleGame\\LinePuzzleGame.csproj": {
+    "C:\\Users\\Computer\\Documents\\Education\\GorselProgramlama2\\Computer-Programming-Projects\\GpAllWeeks\\LinePuzzleGame\\LinePuzzleGame.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Computer\\Documents\\Education\\GorselProgramlama2\\GpAllWeeks\\LinePuzzleGame\\LinePuzzleGame.csproj",
+        "projectUniqueName": "C:\\Users\\Computer\\Documents\\Education\\GorselProgramlama2\\Computer-Programming-Projects\\GpAllWeeks\\LinePuzzleGame\\LinePuzzleGame.csproj",
         "projectName": "LinePuzzleGame",
-        "projectPath": "C:\\Users\\Computer\\Documents\\Education\\GorselProgramlama2\\GpAllWeeks\\LinePuzzleGame\\LinePuzzleGame.csproj",
+        "projectPath": "C:\\Users\\Computer\\Documents\\Education\\GorselProgramlama2\\Computer-Programming-Projects\\GpAllWeeks\\LinePuzzleGame\\LinePuzzleGame.csproj",
         "packagesPath": "C:\\Users\\Computer\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Computer\\Documents\\Education\\GorselProgramlama2\\GpAllWeeks\\LinePuzzleGame\\obj\\",
+        "outputPath": "C:\\Users\\Computer\\Documents\\Education\\GorselProgramlama2\\Computer-Programming-Projects\\GpAllWeeks\\LinePuzzleGame\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
