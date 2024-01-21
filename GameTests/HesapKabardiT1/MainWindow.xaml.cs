@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,8 +45,8 @@ namespace HesapKabardiT1
 				this.Top += e.GetPosition(this).Y - pxy.Y;
 			}
 		}
-		Border selection = new Border();
-		Label[,] table = new Label[11, 11];
+
+		PointItem[,] table = new PointItem[11, 11];
 		SolidColorBrush defaultBg = new SolidColorBrush(Color.FromRgb(45, 45, 45));
 		private void FillTable()
 		{
@@ -56,13 +57,13 @@ namespace HesapKabardiT1
 			{
 				for (int j = 0; j < GameHolder.ActualHeight / row; j++)
 				{
-					Label b = new Label() { Margin = new Thickness(1), Background = defaultBg, Foreground = defaultBg };
+					PointItem b = new PointItem() { Margin = new Thickness(1), Background = defaultBg, Foreground = defaultBg };
 					b.BeginAnimation(HeightProperty, animation);
 					b.BeginAnimation(WidthProperty, animation);
 					b.HorizontalContentAlignment = HorizontalAlignment.Center;
 					b.VerticalContentAlignment = VerticalAlignment.Center;
 					b.FontSize = ((col + row) / 2) * 0.5f - ($"{i},{j}".Length * 2);
-					b.Content = i + "," + j;
+					b.Content = (Convert.ToChar(65 + i)) + "," + j;
 					Grid.SetColumn(b, j);
 					Grid.SetRow(b, i);
 					table[i, j] = b;
@@ -78,30 +79,32 @@ namespace HesapKabardiT1
 		private void B_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
 		{
 			Label s = (Label)sender;
-			int row = Convert.ToInt32(("" + s.Content).Split(",")[0]);
+			int row = Convert.ToInt32(Convert.ToChar(("" + s.Content).Split(",")[0])) - 65;
 			int col = Convert.ToInt32(("" + s.Content).Split(",")[1]);
-			table[row, col].Background = searchColor;
+			if (s.Background != defaultBg)
+			{
+				DeleteCells(col, row);
+			}
 		}
 
 		private void B_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
 			Label s = (Label)sender;
-			int row = Convert.ToInt32(("" + s.Content).Split(",")[0]);
+			int row = Convert.ToInt32(Convert.ToChar(("" + s.Content).Split(",")[0])) - 65;
 			int col = Convert.ToInt32(("" + s.Content).Split(",")[1]);
-			if (selection == null)
+			if (SelectedItem.Background == null)
 			{
 				MessageBox.Show("Select item before replace", "Caution!", MessageBoxButton.OK, MessageBoxImage.Warning);
-				return;
 			}
-			if (s.Background==defaultBg)
+			else if (s.Background == defaultBg)
 			{
-				if (selection.Width >= selection.Height)//horizontal
+				if (SelectedItem.Width >= SelectedItem.Height)//horizontal
 				{
-					ReplaceCellsOnX(row, col, (int)(selection.Width / selection.Height));
+					ReplaceCellsOnX(row, col, (int)(SelectedItem.Width / SelectedItem.Height));
 				}
 				else
 				{
-					MessageBox.Show("Vertical system is still developing");
+					ReplaceCellsOnY(col, row, (int)(SelectedItem.Height / SelectedItem.Width));
 				}
 			}
 		}
@@ -122,6 +125,11 @@ namespace HesapKabardiT1
 			// first search for right side
 			int stack = -1;// dont count starting point
 			int[] filled = new int[length];
+			//fill with -1 for not selected points
+			for (int i = 0; i < length; i++)
+			{
+				filled[i] = -1;
+			}
 			for (int i = 0; i < length; i++)
 			{
 				if (point + i < table.GetLength(1))
@@ -151,21 +159,136 @@ namespace HesapKabardiT1
 					}
 				}
 			}
-			// if stack isnt matching to lengh clear selection
+			//set friend points
+			List<int[]> friends = new List<int[]>();
+			foreach (var item in filled)
+			{
+				if (item >= 0 && item <= table.GetLength(0))
+				{
+					friends.Add(new int[] { row, item });
+				}
+			}
+			// if stack isnt matching to lengh clear SelectedItem
 			if (stack + 1 != length)
 			{
 				foreach (var item in filled)
 				{
-					table[row, item].Background = defaultBg;
+					if (item >= 0 && item <= table.GetLength(1))
+					{
+						table[row, item].Background = defaultBg;
+					}
 				}
 			}
 			else//=> paint with selected item's color
 			{
 				foreach (var item in filled)
 				{
-					table[row, item].Background = selection?.Background;
+					if (item >= 0 && item <= table.GetLength(1))
+					{
+						table[row, item].Background = SelectedItem.Background;
+						table[row, item].Foreground = SelectedItem.Background;
+						table[row, item].friends = friends;
+						table[row, item].selectedItem = UiSelectedItem;
+						table[row, item].preBgColor = UiSelectedItem?.Background;
+					}
+				}
+				if (UiSelectedItem != null)
+				{
+					UiSelectedItem.Background = defaultBg;
+					UiSelectedItem.IsEnabled = false;
+				}
+				DeselectItem();
+			}
+		}
+		private void ReplaceCellsOnY(int col, int point, int length)
+		{
+			int stack = -1;
+			int[] filled = new int[length];
+			for (int i = 0; i < length; i++)
+			{
+				filled[i] = -1;
+			}
+			for (int i = 0; i < length; i++)
+			{
+				if (point + i < table.GetLength(1))
+				{
+					if (table[point + i, col].Background == defaultBg)
+					{
+						table[point + i, col].Background = searchColor;
+						stack++;
+						filled[stack] = point + i;
+					}
+					else
+					{
+						break;
+					}
 				}
 			}
+			// to top
+			for (int i = ((point + stack) - (length - 1)); i < (point + stack); i++)
+			{
+				if (i < table.GetLength(0) && i >= 0)
+				{
+					if (table[i, col].Background == defaultBg)// default bg points empty cell
+					{
+						table[i, col].Background = searchColor;
+						stack++;
+						filled[stack] = i;
+					}
+				}
+			}
+			//set friend points
+			List<int[]> friends = new List<int[]>();
+			foreach (var item in filled)
+			{
+				if (item >= 0 && item <= table.GetLength(0))
+				{
+					friends.Add(new int[] { item, col });
+				}
+			}
+			// if stack isnt matching to lengh clear SelectedItem
+			if (stack + 1 != length)
+			{
+				foreach (var item in filled)
+				{
+					if (item >= 0 && item <= table.GetLength(0))
+					{
+						table[item, col].Background = defaultBg;
+					}
+				}
+			}
+			else//=> paint with selected item's color
+			{
+				foreach (var item in filled)
+				{
+					if (item >= 0 && item <= table.GetLength(0))
+					{
+						table[item, col].Background = SelectedItem?.Background;
+						table[item, col].Foreground = SelectedItem?.Background;
+						table[item, col].friends = friends;
+						table[item, col].selectedItem = UiSelectedItem;
+						table[item, col].preBgColor = UiSelectedItem?.Background;
+					}
+				}
+				if (UiSelectedItem != null)
+				{
+					UiSelectedItem.Background = defaultBg;
+					UiSelectedItem.IsEnabled = false;
+				}
+				DeselectItem();
+			}
+		}
+		private void DeleteCells(int col, int row)
+		{
+			foreach (var item in table[row, col].friends)
+			{
+				table[item[0], item[1]].Background = defaultBg;
+				table[item[0], item[1]].Foreground = defaultBg;
+			}
+			table[row, col].friends.Clear();
+			table[row, col].selectedItem.Background = table[row, col].preBgColor;
+			table[row, col].selectedItem.IsEnabled = true;
+			DeselectItem();
 		}
 		SolidColorBrush defaultEnemyBg = new SolidColorBrush(Color.FromRgb(70, 70, 70));
 		private void FillEnemyTable()
@@ -184,8 +307,8 @@ namespace HesapKabardiT1
 					le.HorizontalContentAlignment = HorizontalAlignment.Center;
 					le.VerticalContentAlignment = VerticalAlignment.Center;
 					le.FontSize = ((col + row) / 2) * 0.5f - ($"{i},{j}".Length * 2);
-					le.Content = (i == 0 || j == 0) ? (Convert.ToChar(65 + i)) + "," + j : "";
-					le.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+					le.Content = (Convert.ToChar(65 + i)) + "," + j;
+					le.Foreground = new SolidColorBrush(Color.FromRgb((byte)(defaultEnemyBg.Color.R + 100), (byte)(defaultEnemyBg.Color.G + 100), (byte)(defaultEnemyBg.Color.B + 100)));
 					Grid.SetColumn(le, j);
 					Grid.SetRow(le, i);
 					EnemyGameHolder.Children.Add(le);
@@ -198,11 +321,13 @@ namespace HesapKabardiT1
 
 		private void Le_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			Label s = (Label)sender;
+			PointItem s = (PointItem)sender;
 			if (s.IsEnabled)
 			{
-				s.Background = new SolidColorBrush(Color.FromRgb(40, 10, 10));
+				DoubleAnimation animation = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(200));
+				s.BeginAnimation(OpacityProperty, animation);
 				s.IsEnabled = false;
+				s.selectedItem = UiSelectedItem;
 			}
 		}
 
@@ -239,34 +364,52 @@ namespace HesapKabardiT1
 			FillTable();
 			FillEnemyTable();
 		}
-
+		Label? UiSelectedItem;
 		private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			Border s = (Border)sender;
-			selection.Width = s.Width;
-			selection.Height = s.Height;
-			selection.Background = s.Background;
+			Label s = (Label)sender;
+			SelectedItem.Width = s.Width;
+			SelectedItem.Height = s.Height;
+			SelectedItem.Background = s.Background;
+			UiSelectedItem = s;
 			SetSelectedItemSizes();
+		}
+		private void DeselectItem()
+		{
+			SelectedItem.Background = null;
+			SelectedItem.Height = 0;
+			SelectedItem.Width = 0;
 		}
 		private void SetSelectedItemSizes()
 		{
-			if (selection != null)
+			if (SelectedItem != null)
 			{
-				SelectedItem.Background = selection.Background;
-				SelectedItem.Height = selection.Height;
-				SelectedItem.Width = selection.Width;
+				SelectedItem.Background = SelectedItem.Background;
+				SelectedItem.Height = SelectedItem.Height;
+				SelectedItem.Width = SelectedItem.Width;
 			}
 		}
-
-		private void ItemRotateXY_Click(object sender, RoutedEventArgs e)
+		void RotateItem()
 		{
-			if (selection != null)
+			if (SelectedItem != null)
 			{
-				selection.Width += selection.Height;
-				selection.Height = selection.Width - selection.Height;
-				selection.Width -= selection.Height;
+				SelectedItem.Width += SelectedItem.Height;
+				SelectedItem.Height = SelectedItem.Width - SelectedItem.Height;
+				SelectedItem.Width -= SelectedItem.Height;
 				SetSelectedItemSizes();
 			}
+		}
+		private void ItemRotateXY_Click(object sender, RoutedEventArgs e)
+		{
+			RotateItem();
+		}
+
+		private class PointItem : Label
+		{
+			public List<int[]> friends = new List<int[]>();
+			[AllowNull]
+			public Label selectedItem;
+			public Brush? preBgColor;
 		}
 	}
 }
