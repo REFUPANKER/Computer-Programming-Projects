@@ -4,6 +4,5 @@
              xmlns:local="clr-namespace:HesapKabardiT1"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
     </Application.Resources>
 </Application>

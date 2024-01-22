@@ -46,6 +46,7 @@ namespace HesapKabardiT1
 			}
 		}
 
+		bool canReplace = true;
 		PointItem[,] table = new PointItem[11, 11];
 		SolidColorBrush defaultBg = new SolidColorBrush(Color.FromRgb(45, 45, 45));
 		private void FillTable()
@@ -78,6 +79,7 @@ namespace HesapKabardiT1
 
 		private void B_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
 		{
+			if (!canReplace) { return; }
 			Label s = (Label)sender;
 			int row = Convert.ToInt32(Convert.ToChar(("" + s.Content).Split(",")[0])) - 65;
 			int col = Convert.ToInt32(("" + s.Content).Split(",")[1]);
@@ -89,23 +91,35 @@ namespace HesapKabardiT1
 
 		private void B_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			Label s = (Label)sender;
+			if (!canReplace) { return; }
+			PointItem s = (PointItem)sender;
 			int row = Convert.ToInt32(Convert.ToChar(("" + s.Content).Split(",")[0])) - 65;
 			int col = Convert.ToInt32(("" + s.Content).Split(",")[1]);
-			if (SelectedItem.Background == null)
+			if (s.Background == defaultBg)
 			{
-				MessageBox.Show("Select item before replace", "Caution!", MessageBoxButton.OK, MessageBoxImage.Warning);
-			}
-			else if (s.Background == defaultBg)
-			{
-				if (SelectedItem.Width >= SelectedItem.Height)//horizontal
+				if (SelectedItem.Background == null)
 				{
-					ReplaceCellsOnX(row, col, (int)(SelectedItem.Width / SelectedItem.Height));
+					MessageBox.Show("Select item before replace", "Caution!", MessageBoxButton.OK, MessageBoxImage.Warning);
 				}
 				else
 				{
-					ReplaceCellsOnY(col, row, (int)(SelectedItem.Height / SelectedItem.Width));
+					if (SelectedItem.Width >= SelectedItem.Height) // horizontal
+					{
+						ReplaceCellsOnX(row, col, (int)(SelectedItem.Width / SelectedItem.Height));
+					}
+					else
+					{
+						ReplaceCellsOnY(col, row, (int)(SelectedItem.Height / SelectedItem.Width));
+					}
 				}
+			}
+			else
+			{
+				totalBetOnItem.Content = s.Bet > 0 ? s.Bet : "Placing bet...";
+				SelectedBetItem.Content = s.Content;
+				PlacedBet.Text = s.Bet + "";
+				PlacedBet.Focus();
+				//MessageBox.Show("Place bet or update", "Go to Bet Panel!", MessageBoxButton.OK, MessageBoxImage.Warning);
 			}
 		}
 		SolidColorBrush searchColor = new SolidColorBrush(Color.FromRgb(255, 255, 0));
@@ -321,13 +335,12 @@ namespace HesapKabardiT1
 
 		private void Le_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			PointItem s = (PointItem)sender;
+			Label s = (Label)sender;
 			if (s.IsEnabled)
 			{
 				DoubleAnimation animation = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(200));
 				s.BeginAnimation(OpacityProperty, animation);
 				s.IsEnabled = false;
-				s.selectedItem = UiSelectedItem;
 			}
 		}
 
@@ -351,12 +364,15 @@ namespace HesapKabardiT1
 
 		private void B_MouseLeave(object sender, MouseEventArgs e)
 		{
-			((Label)sender).Foreground = ((Label)sender).Background;
+			PointItem s = (PointItem)sender;
+			s.Foreground = s.Background;
+			totalBetOnItem.Content = "";
 		}
-
 		private void B_MouseMove(object sender, MouseEventArgs e)
 		{
-			((Label)sender).Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+			PointItem s= (PointItem)sender;
+			s.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+			totalBetOnItem.Content = s.Bet;
 		}
 
 		private void AppCore_Loaded(object sender, RoutedEventArgs e)
@@ -410,6 +426,80 @@ namespace HesapKabardiT1
 			[AllowNull]
 			public Label selectedItem;
 			public Brush? preBgColor;
+			public int Bet = 0;
+			public bool haveBet { get { return Bet > 0; } }
+		}
+
+		private void ReadyBtn_Click(object sender, RoutedEventArgs e)
+		{
+			bool granted = true;
+			foreach (StackPanel item in PointItemsUiHolder.Children)
+			{
+				foreach (Label uitem in item.Children)
+				{
+					if (uitem.Background != defaultBg)
+					{
+						granted = false;
+					}
+				}
+			}
+			if (granted)
+			{
+				canReplace = false;
+				ItemReplacingMenu.Height = ItemReplacingMenu.ActualHeight;
+				PlaceBetMenu.Height = PlaceBetMenu.ActualHeight;
+				ItemReplacingMenu.IsEnabled = false;
+				PlaceBetMenu.IsEnabled = false;
+				DoubleAnimation hideMenu = new DoubleAnimation(0, TimeSpan.FromMilliseconds(300));
+				
+				ItemReplacingMenu.BeginAnimation(HeightProperty, hideMenu);
+				PlaceBetMenu.BeginAnimation(HeightProperty, hideMenu);
+				MessageBox.Show("Good luck!");
+			}
+			else
+			{
+				MessageBox.Show("Use all items");
+			}
+		}
+
+		private void Confirmbet_Click(object sender, RoutedEventArgs e)
+		{
+			if ((SelectedBetItem.Content + "").StartsWith("-"))
+			{
+				MessageBox.Show("No Item Selected");
+			}
+			else
+			{
+				int row = Convert.ToInt32(Convert.ToChar(("" + SelectedBetItem.Content).Split(",")[0])) - 65;
+				int col = Convert.ToInt32(("" + SelectedBetItem.Content).Split(",")[1]);
+				if (string.IsNullOrEmpty(PlacedBet.Text) == false)
+				{
+					table[row, col].Bet = Convert.ToInt32(PlacedBet.Text);
+					SelectedBetItem.Content = "-,-";
+					totalBetOnItem.Content = "0";
+					PlacedBet.Text = "";
+					MessageBox.Show("Bets placed");
+				}
+				else
+				{
+					MessageBox.Show("Place bet (Min: 0)");
+				}
+			}
+		}
+
+		private void PlacedBet_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			string r = "";
+			for (int i = 0; i < PlacedBet.Text.Length; i++)
+			{
+				int c = Convert.ToInt32(PlacedBet.Text[i]);
+				if (c >= 48 && c <= 57)
+				{
+					r += ((char)c);
+				}
+			}
+			PlacedBet.Text = r;
+			PlacedBet.SelectionStart = PlacedBet.Text.Length;
 		}
 	}
 }

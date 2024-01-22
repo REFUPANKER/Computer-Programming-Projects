@@ -67,9 +67,12 @@ namespace LinePuzzleGame
             }
             //RandomOrangeBox(4);
             CreateUser();
-            MapsComboBox.Items.Add("None");
-            MapsComboBox.SelectedIndex = 0;
-            UploadMaps(DesktopPath + "\\path.txt");
+            if (!UseOutline)
+            {
+				MapsComboBox.Items.Add("None");
+				MapsComboBox.SelectedIndex = 0;
+				UploadMaps(DesktopPath + "\\path.txt");
+			}
         }
 
         void CellClick(object sender, MouseEventArgs e)
@@ -196,7 +199,7 @@ namespace LinePuzzleGame
                 }
 
             }
-            catch (Exception e) { MessageBox.Show(e + ""); }
+            catch{ }
         }
 
         Random rnd = new Random();
