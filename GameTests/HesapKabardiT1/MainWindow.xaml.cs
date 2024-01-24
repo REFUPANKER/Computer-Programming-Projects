@@ -370,7 +370,7 @@ namespace HesapKabardiT1
 		}
 		private void B_MouseMove(object sender, MouseEventArgs e)
 		{
-			PointItem s= (PointItem)sender;
+			PointItem s = (PointItem)sender;
 			s.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
 			totalBetOnItem.Content = s.Bet;
 		}
@@ -429,7 +429,8 @@ namespace HesapKabardiT1
 			public int Bet = 0;
 			public bool haveBet { get { return Bet > 0; } }
 		}
-
+		List<int[]> ReplacedItems = new List<int[]>();
+		int TotalBet = 0;
 		private void ReadyBtn_Click(object sender, RoutedEventArgs e)
 		{
 			bool granted = true;
@@ -450,10 +451,28 @@ namespace HesapKabardiT1
 				PlaceBetMenu.Height = PlaceBetMenu.ActualHeight;
 				ItemReplacingMenu.IsEnabled = false;
 				PlaceBetMenu.IsEnabled = false;
-				DoubleAnimation hideMenu = new DoubleAnimation(0, TimeSpan.FromMilliseconds(300));
 				
+				DoubleAnimation hideMenu = new DoubleAnimation(0, TimeSpan.FromMilliseconds(300));
+
 				ItemReplacingMenu.BeginAnimation(HeightProperty, hideMenu);
 				PlaceBetMenu.BeginAnimation(HeightProperty, hideMenu);
+
+				for (int i = 0; i < table.GetLength(0); i++)
+				{
+					for (int j = 0; j < table.GetLength(1); j++)
+					{
+						if (table[i, j].Background != defaultBg)
+						{
+							ReplacedItems.Add(new int[] { i, j });
+						}
+						if (table[i, j].haveBet)
+						{
+							TotalBet += table[i, j].Bet;
+						}
+					}
+				}
+				TotalBetLabel.Content = TotalBet;
+				ChatMenu.Visibility = Visibility.Visible;
 				MessageBox.Show("Good luck!");
 			}
 			else

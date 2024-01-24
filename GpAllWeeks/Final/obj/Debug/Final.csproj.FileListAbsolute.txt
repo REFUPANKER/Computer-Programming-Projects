@@ -1,0 +1,15 @@
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Final\bin\Debug\Final.exe.config
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Final\bin\Debug\Final.exe
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Final\bin\Debug\Final.pdb
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Final\obj\Debug\Final.csproj.AssemblyReference.cache
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Final\obj\Debug\Final.csproj.SuggestedBindingRedirects.cache
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Final\obj\Debug\Final.Form1.resources
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Final\obj\Debug\Final.Properties.Resources.resources
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Final\obj\Debug\Final.csproj.GenerateResource.cache
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Final\obj\Debug\Final.csproj.CoreCompileInputs.cache
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Final\obj\Debug\Final.exe
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Final\obj\Debug\Final.pdb
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Final\obj\Debug\Final.EventLogMenu.resources
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Final\obj\Debug\Final.InspectCode.resources
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Final\obj\Debug\Final.HakkindaFormu.resources
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Final\obj\Debug\Final.TimerKullanımOrnegi.resources

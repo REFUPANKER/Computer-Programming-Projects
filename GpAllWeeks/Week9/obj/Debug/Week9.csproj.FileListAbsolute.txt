@@ -11,3 +11,16 @@ C:\Users\Computer\Documents\Education\GorselProgramlama2\GpAllWeeks\Week9\obj\De
 C:\Users\Computer\Documents\Education\GorselProgramlama2\GpAllWeeks\Week9\obj\Debug\Week9.exe
 C:\Users\Computer\Documents\Education\GorselProgramlama2\GpAllWeeks\Week9\obj\Debug\Week9.pdb
 C:\Users\Computer\Documents\Education\GorselProgramlama2\GpAllWeeks\Week9\obj\Debug\Week9.NewProject.resources
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week9\bin\Debug\Week9.exe.config
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week9\bin\Debug\Week9.exe
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week9\bin\Debug\Week9.pdb
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week9\obj\Debug\Week9.csproj.AssemblyReference.cache
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week9\obj\Debug\Week9.csproj.SuggestedBindingRedirects.cache
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week9\obj\Debug\Week9.AboutBox1.resources
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week9\obj\Debug\Week9.Form1.resources
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week9\obj\Debug\Week9.NewProject.resources
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week9\obj\Debug\Week9.Properties.Resources.resources
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week9\obj\Debug\Week9.csproj.GenerateResource.cache
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week9\obj\Debug\Week9.csproj.CoreCompileInputs.cache
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week9\obj\Debug\Week9.exe
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GpAllWeeks\Week9\obj\Debug\Week9.pdb
