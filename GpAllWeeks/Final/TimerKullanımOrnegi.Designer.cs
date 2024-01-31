@@ -152,7 +152,7 @@
 			// AnalogClock
 			// 
 			this.AnalogClock.Enabled = true;
-			this.AnalogClock.Interval = 10;
+			this.AnalogClock.Interval = 50;
 			this.AnalogClock.Tick += new System.EventHandler(this.AnalogClock_Tick);
 			// 
 			// TimerKullanımOrnegi

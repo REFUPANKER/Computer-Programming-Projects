@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HesapKabardiT1.Managers;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -22,21 +23,31 @@ namespace HesapKabardiT1
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+
+		DatabaseManager dbm = new DatabaseManager();
+		ChatMenu chatmenu;
 		public MainWindow()
 		{
 			InitializeComponent();
+			chatmenu = new ChatMenu(dbm);
+		}
+
+		private void AppCore_Loaded(object sender, RoutedEventArgs e)
+		{
+			FillTable();
+			FillEnemyTable();
 		}
 
 		private void ExitBtn_Click(object sender, RoutedEventArgs e)
 		{
 			Application.Current.Shutdown();
 		}
+
 		Point pxy;
 		private void Navbar_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			pxy = e.GetPosition(this);
 		}
-
 		private void Navbar_MouseMove(object sender, MouseEventArgs e)
 		{
 			if (e.LeftButton == MouseButtonState.Pressed)
@@ -44,6 +55,16 @@ namespace HesapKabardiT1
 				this.Left += e.GetPosition(this).X - pxy.X;
 				this.Top += e.GetPosition(this).Y - pxy.Y;
 			}
+		}
+
+		private class PointItem : Label
+		{
+			public List<int[]> friends = new List<int[]>();
+			[AllowNull]
+			public Label selectedItem;
+			public Brush? preBgColor;
+			public int Bet = 0;
+			public bool haveBet { get { return Bet > 0; } }
 		}
 
 		bool canReplace = true;
@@ -77,51 +98,6 @@ namespace HesapKabardiT1
 			}
 		}
 
-		private void B_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-		{
-			if (!canReplace) { return; }
-			Label s = (Label)sender;
-			int row = Convert.ToInt32(Convert.ToChar(("" + s.Content).Split(",")[0])) - 65;
-			int col = Convert.ToInt32(("" + s.Content).Split(",")[1]);
-			if (s.Background != defaultBg)
-			{
-				DeleteCells(col, row);
-			}
-		}
-
-		private void B_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-		{
-			if (!canReplace) { return; }
-			PointItem s = (PointItem)sender;
-			int row = Convert.ToInt32(Convert.ToChar(("" + s.Content).Split(",")[0])) - 65;
-			int col = Convert.ToInt32(("" + s.Content).Split(",")[1]);
-			if (s.Background == defaultBg)
-			{
-				if (SelectedItem.Background == null)
-				{
-					MessageBox.Show("Select item before replace", "Caution!", MessageBoxButton.OK, MessageBoxImage.Warning);
-				}
-				else
-				{
-					if (SelectedItem.Width >= SelectedItem.Height) // horizontal
-					{
-						ReplaceCellsOnX(row, col, (int)(SelectedItem.Width / SelectedItem.Height));
-					}
-					else
-					{
-						ReplaceCellsOnY(col, row, (int)(SelectedItem.Height / SelectedItem.Width));
-					}
-				}
-			}
-			else
-			{
-				totalBetOnItem.Content = s.Bet > 0 ? s.Bet : "Placing bet...";
-				SelectedBetItem.Content = s.Content;
-				PlacedBet.Text = s.Bet + "";
-				PlacedBet.Focus();
-				//MessageBox.Show("Place bet or update", "Go to Bet Panel!", MessageBoxButton.OK, MessageBoxImage.Warning);
-			}
-		}
 		SolidColorBrush searchColor = new SolidColorBrush(Color.FromRgb(255, 255, 0));
 		private void ReplaceCellsOnX(int row, int point, int length)
 		{
@@ -292,18 +268,22 @@ namespace HesapKabardiT1
 				DeselectItem();
 			}
 		}
+
 		private void DeleteCells(int col, int row)
 		{
 			foreach (var item in table[row, col].friends)
 			{
 				table[item[0], item[1]].Background = defaultBg;
 				table[item[0], item[1]].Foreground = defaultBg;
+				table[item[0], item[1]].Bet = 0;
 			}
 			table[row, col].friends.Clear();
 			table[row, col].selectedItem.Background = table[row, col].preBgColor;
 			table[row, col].selectedItem.IsEnabled = true;
+			totalBetOnItem.Content = "0";
 			DeselectItem();
 		}
+
 		SolidColorBrush defaultEnemyBg = new SolidColorBrush(Color.FromRgb(70, 70, 70));
 		private void FillEnemyTable()
 		{
@@ -343,7 +323,6 @@ namespace HesapKabardiT1
 				s.IsEnabled = false;
 			}
 		}
-
 		private void Le_MouseLeave(object sender, MouseEventArgs e)
 		{
 			Label s = (Label)sender;
@@ -352,7 +331,6 @@ namespace HesapKabardiT1
 				s.Background = defaultEnemyBg;
 			}
 		}
-
 		private void Le_MouseMove(object sender, MouseEventArgs e)
 		{
 			Label s = (Label)sender;
@@ -362,6 +340,51 @@ namespace HesapKabardiT1
 			}
 		}
 
+		private void B_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			if (!canReplace) { return; }
+			Label s = (Label)sender;
+			int row = Convert.ToInt32(Convert.ToChar(("" + s.Content).Split(",")[0])) - 65;
+			int col = Convert.ToInt32(("" + s.Content).Split(",")[1]);
+			if (s.Background != defaultBg)
+			{
+				DeleteCells(col, row);
+			}
+		}
+		private void B_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			if (!canReplace) { return; }
+			PointItem s = (PointItem)sender;
+			int row = Convert.ToInt32(Convert.ToChar(("" + s.Content).Split(",")[0])) - 65;
+			int col = Convert.ToInt32(("" + s.Content).Split(",")[1]);
+			if (s.Background == defaultBg)
+			{
+				if (SelectedItem.Background == null)
+				{
+					MessageBox.Show("Select item before replace", "Caution!", MessageBoxButton.OK, MessageBoxImage.Warning);
+				}
+				else
+				{
+					if (SelectedItem.Width >= SelectedItem.Height) // horizontal
+					{
+						ReplaceCellsOnX(row, col, (int)(SelectedItem.Width / SelectedItem.Height));
+					}
+					else
+					{
+						ReplaceCellsOnY(col, row, (int)(SelectedItem.Height / SelectedItem.Width));
+					}
+				}
+			}
+			else
+			{
+				totalBetOnItem.Content = s.Bet > 0 ? s.Bet : "Placing bet...";
+				SelectedBetItem.Content = s.Content;
+				PlaceBetMenu.Visibility = Visibility.Visible;
+				PlacedBet.Text = s.Bet + "";
+				PlacedBet.Focus();
+				//MessageBox.Show("Place bet or update", "Go to Bet Panel!", MessageBoxButton.OK, MessageBoxImage.Warning);
+			}
+		}
 		private void B_MouseLeave(object sender, MouseEventArgs e)
 		{
 			PointItem s = (PointItem)sender;
@@ -375,11 +398,6 @@ namespace HesapKabardiT1
 			totalBetOnItem.Content = s.Bet;
 		}
 
-		private void AppCore_Loaded(object sender, RoutedEventArgs e)
-		{
-			FillTable();
-			FillEnemyTable();
-		}
 		Label? UiSelectedItem;
 		private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
@@ -420,15 +438,6 @@ namespace HesapKabardiT1
 			RotateItem();
 		}
 
-		private class PointItem : Label
-		{
-			public List<int[]> friends = new List<int[]>();
-			[AllowNull]
-			public Label selectedItem;
-			public Brush? preBgColor;
-			public int Bet = 0;
-			public bool haveBet { get { return Bet > 0; } }
-		}
 		List<int[]> ReplacedItems = new List<int[]>();
 		int TotalBet = 0;
 		private void ReadyBtn_Click(object sender, RoutedEventArgs e)
@@ -451,7 +460,7 @@ namespace HesapKabardiT1
 				PlaceBetMenu.Height = PlaceBetMenu.ActualHeight;
 				ItemReplacingMenu.IsEnabled = false;
 				PlaceBetMenu.IsEnabled = false;
-				
+
 				DoubleAnimation hideMenu = new DoubleAnimation(0, TimeSpan.FromMilliseconds(300));
 
 				ItemReplacingMenu.BeginAnimation(HeightProperty, hideMenu);
@@ -472,7 +481,6 @@ namespace HesapKabardiT1
 					}
 				}
 				TotalBetLabel.Content = TotalBet;
-				ChatMenu.Visibility = Visibility.Visible;
 				MessageBox.Show("Good luck!");
 			}
 			else
@@ -480,7 +488,6 @@ namespace HesapKabardiT1
 				MessageBox.Show("Use all items");
 			}
 		}
-
 		private void Confirmbet_Click(object sender, RoutedEventArgs e)
 		{
 			if ((SelectedBetItem.Content + "").StartsWith("-"))
@@ -497,6 +504,7 @@ namespace HesapKabardiT1
 					SelectedBetItem.Content = "-,-";
 					totalBetOnItem.Content = "0";
 					PlacedBet.Text = "";
+					PlaceBetMenu.Visibility = Visibility.Collapsed;
 					MessageBox.Show("Bets placed");
 				}
 				else
@@ -505,7 +513,7 @@ namespace HesapKabardiT1
 				}
 			}
 		}
-
+		public const int MaxBet = 5000;
 		private void PlacedBet_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			string r = "";
@@ -517,8 +525,43 @@ namespace HesapKabardiT1
 					r += ((char)c);
 				}
 			}
+			if (ConvertibleToInt(r) && Convert.ToInt32(r) > MaxBet)
+			{
+				MessageBox.Show($"Max bet is {MaxBet}", "Caution!", MessageBoxButton.OK, MessageBoxImage.Warning);
+				r = MaxBet.ToString();
+			}
 			PlacedBet.Text = r;
 			PlacedBet.SelectionStart = PlacedBet.Text.Length;
+		}
+		private bool ConvertibleToInt(object msg)
+		{
+			bool result = false;
+			try
+			{
+				Convert.ToInt32(msg);
+				result = true;
+			}
+			catch { }
+			return result;
+		}
+		private void CancelBet_Click(object sender, RoutedEventArgs e)
+		{
+			SelectedBetItem.Content = "-,-";
+			totalBetOnItem.Content = "0";
+			PlacedBet.Text = "";
+			PlaceBetMenu.Visibility = Visibility.Collapsed;
+		}
+
+		private void ChatOpener_Click(object sender, RoutedEventArgs e)
+		{
+			if (chatmenu.Visibility != Visibility.Visible)
+			{
+				chatmenu.Show();
+			}
+			else
+			{
+				chatmenu.Hide();
+			}
 		}
 	}
 }

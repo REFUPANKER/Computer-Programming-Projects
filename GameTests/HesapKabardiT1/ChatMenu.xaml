@@ -1,0 +1,46 @@
+﻿<Window x:Class="HesapKabardiT1.ChatMenu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HesapKabardiT1"
+        ShowInTaskbar="False"
+        IsTabStop="False"
+        mc:Ignorable="d"
+        Topmost="True"
+        ResizeMode="NoResize"
+        Closing="Window_Closing"
+        IsVisibleChanged="Window_IsVisibleChanged"
+        Title="Chat Room"
+        Height="550" Width="400" Background="#151515" Foreground="White">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Label x:Name="RoomNameLabel" Foreground="White" Content="Room Name" HorizontalContentAlignment="Center" FontSize="18"></Label>
+        </Grid>
+        <Grid Grid.Row="1">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" x:Name="messageScroll">
+                <StackPanel Orientation="Vertical" x:Name="messageHolder">
+                    <!--<Border Style="{DynamicResource MessageItem}">
+                        <StackPanel Style="{DynamicResource MessageItemStack}">
+                            <Label Style="{DynamicResource MessageItemSender}" Content="123"/>
+                            <TextBlock Style="{DynamicResource MessageItemContent}" Text="123"></TextBlock>
+                        </StackPanel>
+                    </Border>-->
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+        <Grid Grid.Row="2" Background="#202020">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="50"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Padding="5" MaxLines="5" MaxLength="256" KeyDown="MessageContent_KeyDown" x:Name="MessageContent" Grid.Column="0" Background="Transparent" Foreground="White"  BorderThickness="0"  TextWrapping="Wrap" Height="50" FontSize="18" CaretBrush="White"/>
+            <Button Style="{DynamicResource DarkThemedButton}" x:Name="SendMessageBtn" Click="SendMessageBtn_Click" Grid.Column="1" Background="Transparent" BorderThickness="0" Foreground="White" Content="△" FontSize="25"></Button>
+        </Grid>
+    </Grid>
+</Window>

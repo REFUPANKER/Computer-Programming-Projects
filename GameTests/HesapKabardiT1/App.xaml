@@ -4,5 +4,54 @@
              xmlns:local="clr-namespace:HesapKabardiT1"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <Style x:Key="MessageItem" TargetType="{x:Type Border}">
+            <Setter Property="Margin" Value="5"></Setter>
+            <Setter Property="Background" Value="#101010"></Setter>
+            <Setter Property="BorderBrush" Value="#454545"></Setter>
+            <Setter Property="CornerRadius" Value="5"></Setter>
+            <Setter Property="BorderThickness" Value="1"></Setter>
+        </Style>
+        <Style x:Key="MessageItemStack" TargetType="{x:Type StackPanel}">
+            <Setter Property="Margin" Value="5"></Setter>
+        </Style>
+        <Style x:Key="MessageItemSender" TargetType="{x:Type Label}">
+            <Setter Property="Padding" Value="0"></Setter>
+            <Setter Property="Foreground" Value="White"></Setter>
+            <Setter Property="FontSize" Value="20"></Setter>
+        </Style>
+        <Style x:Key="MessageItemContent" TargetType="{x:Type TextBlock}">
+            <Setter Property="Padding" Value="0"></Setter>
+            <Setter Property="Foreground" Value="#FFB4B4B4"></Setter>
+            <Setter Property="FontSize" Value="15"></Setter>
+            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+        </Style>
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="DarkThemedButton" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="#404040"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="#101010"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Resources>
 </Application>

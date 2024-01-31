@@ -12,13 +12,13 @@
         x:Name="AppCore"
         Loaded="AppCore_Loaded"
         Title="Hesp Kabardı Game" Height="600" Width="1300">
-    <Border Background="#FF1A0000" ClipToBounds="True" CornerRadius="15" BorderThickness="3" BorderBrush="#909090" Margin="0,0,0,10">
+    <Border Background="#FF0F0F0F" ClipToBounds="True" CornerRadius="15" BorderThickness="3" BorderBrush="#909090" Margin="0,0,0,10">
         <Grid Margin="0,0,0,15">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Border Grid.Row="0" x:Name="Navbar" MouseDown="Navbar_MouseDown" MouseMove="Navbar_MouseMove" CornerRadius="12,12,0,0" VerticalAlignment="Top" Height="30" Background="#FF421919" Padding="10,0,10,0">
+            <Border Grid.Row="0" x:Name="Navbar" MouseDown="Navbar_MouseDown" MouseMove="Navbar_MouseMove" CornerRadius="12,12,0,0" VerticalAlignment="Top" Height="30" Background="#FF2D2D2D" Padding="10,0,10,0">
                 <StackPanel Orientation="Horizontal">
                     <Button x:Name="ExitBtn" BorderBrush="Transparent" Click="ExitBtn_Click" HorizontalAlignment="Left" Content="X" Width="30" Background="Transparent" Foreground="White" FontSize="20"></Button>
                     <Label Content="Hesap Kabardı Game [T1 / a.k.a Amiral Battı]" VerticalContentAlignment="Center" Foreground="White" FontSize="15"></Label>
@@ -30,21 +30,17 @@
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-                <Border Margin="0,15,5,0" Grid.Column="1" BorderThickness="1" BorderBrush="White" VerticalAlignment="Top" Width="500" Height="500" Background="#FF170B0B">
+                <Border Margin="0,15,5,0" Grid.Column="1" BorderThickness="1" BorderBrush="White" VerticalAlignment="Top" Width="500" Height="500" Background="#FF0F0C0C">
                     <DockPanel>
                         <Grid DockPanel.Dock="Top">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="0" FontSize="20" HorizontalContentAlignment="Center" Foreground="White" Content="Item Bet :"></Label>
                             <Label Grid.Column="1" FontSize="20" x:Name="totalBetOnItem" HorizontalContentAlignment="Center" Content="0" Foreground="White"></Label>
                             <Label Grid.Column="2" FontSize="20" HorizontalContentAlignment="Center" Content="You" Foreground="White"></Label>
-                            <Label Grid.Column="3" FontSize="20" HorizontalContentAlignment="Center" Content="Bet :" Foreground="White"></Label>
-                            <Label x:Name="betLabel" Grid.Column="4" FontSize="20" HorizontalContentAlignment="Center" Content="0" Foreground="White"></Label>
                         </Grid>
                         <Grid x:Name="GameHolder" Margin="5">
                             <Grid.ColumnDefinitions>
@@ -76,17 +72,10 @@
                         </Grid>
                     </DockPanel>
                 </Border>
-                <Border Margin="5,15,0,0" Grid.Column="2" BorderThickness="1" BorderBrush="White" VerticalAlignment="Top" Width="500" Height="500" Background="#FF170B0B">
+                <Border Margin="5,15,0,0" Grid.Column="2" BorderThickness="1" BorderBrush="White" VerticalAlignment="Top" Width="500" Height="500" Background="#FF0F0C0C">
                     <DockPanel>
                         <Grid DockPanel.Dock="Top">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" FontSize="20" HorizontalContentAlignment="Center" Content="Enemy" Foreground="White"></Label>
-                            <Label Grid.Column="1" FontSize="20" HorizontalContentAlignment="Center" Content="Bet :" Foreground="White"></Label>
-                            <Label x:Name="EnemybetLabel" Grid.Column="2" FontSize="20" HorizontalContentAlignment="Center" Content="0" Foreground="White"></Label>
+                            <Label FontSize="20" HorizontalContentAlignment="Center" Content="Enemy" Foreground="White"></Label>
                         </Grid>
                         <Grid x:Name="EnemyGameHolder" Margin="5">
                             <Grid.ColumnDefinitions>
@@ -163,7 +152,7 @@
                                             <Label HorizontalContentAlignment="Center" Content="Rotate Item" Foreground="White"></Label>
                                             <Button Margin="3" Content="🔁" FontSize="20" x:Name="ItemRotateX" Click="ItemRotateXY_Click"></Button>
                                         </StackPanel>
-                                        <Button Grid.Row="1" x:Name="ReadyBtn" Click="ReadyBtn_Click" Content="Ready" FontSize="20" Foreground="White" Margin="5" Background="{x:Null}" BorderThickness="5" BorderBrush="Green" ></Button>
+                                        <Button Style="{DynamicResource DarkThemedButton}" Grid.Row="1" x:Name="ReadyBtn" Click="ReadyBtn_Click" Content="Ready" FontSize="20" Foreground="White" Margin="5" Background="#FF0E390E" BorderThickness="5" BorderBrush="Green" ></Button>
                                     </Grid>
                                 </Grid>
                             </Border>
@@ -178,7 +167,7 @@
                             <Grid Grid.Row="1">
                                 <Border Background="#FF1C1A1A" Margin="5" Padding="5" CornerRadius="10" BorderThickness="1" BorderBrush="White">
                                     <StackPanel>
-                                        <StackPanel x:Name="PlaceBetMenu">
+                                        <StackPanel x:Name="PlaceBetMenu" Visibility="Collapsed">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition/>
@@ -188,15 +177,19 @@
                                                 <Label Content="-,-" x:Name="SelectedBetItem" HorizontalContentAlignment="Right" Grid.Column="1" FontSize="12" Foreground="White"></Label>
                                             </Grid>
                                             <TextBox TextChanged="PlacedBet_TextChanged" x:Name="PlacedBet" Background="Black" Foreground="White" FontSize="20" InputScope="Number" BorderBrush="Gray" BorderThickness="1" MaxLength="10"/>
-                                            <Button x:Name="Confirmbet" Click="Confirmbet_Click" Content="Confirm" FontSize="15" Foreground="White" Background="{x:Null}" Margin="0,5,0,5" BorderThickness="1" BorderBrush="Green"></Button>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <Button x:Name="Confirmbet" Click="Confirmbet_Click" Content="Confirm" FontSize="15" Foreground="White" Background="{x:Null}" Margin="0,5,5,5" BorderThickness="1" BorderBrush="Green"></Button>
+                                                <Button Grid.Column="1" x:Name="CancelBet" Click="CancelBet_Click" Content="Cancel" FontSize="15" Foreground="White" Background="{x:Null}" Margin="5,5,0,5" BorderThickness="1" BorderBrush="#FF8C2D2D"></Button>
+                                            </Grid>
                                             <Separator Background="White" Margin="10"></Separator>
                                         </StackPanel>
-                                        <Button x:Name="StartGame" Content="Start Game" FontSize="25" Foreground="White" Background="{x:Null}" Margin="0,5,0,0" BorderThickness="3" BorderBrush="Green"></Button>
                                         <Label Content="Total Bet" HorizontalContentAlignment="Center" FontSize="10" Foreground="White"></Label>
                                         <Label x:Name="TotalBetLabel" Content="Player Not ready" Foreground="White" HorizontalContentAlignment="Center" FontSize="15" ></Label>
-                                        <StackPanel x:Name="ChatMenu" Visibility="Collapsed">
-                                            <Label Content="Chat" HorizontalContentAlignment="Center" FontSize="12" Foreground="White"></Label>
-                                        </StackPanel>
+                                        <Button Style="{DynamicResource DarkThemedButton}" Click="ChatOpener_Click" x:Name="ChatOpener" Content="Chat ↗️" Foreground="White" Background="{x:Null}" Margin="5" BorderBrush="White" BorderThickness="1" FontSize="20"></Button>
                                     </StackPanel>
                                 </Border>
                             </Grid>
