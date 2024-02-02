@@ -13,6 +13,8 @@ namespace HesapKabardiT1
 	/// </summary>
 	public partial class ChatMenu : Window
 	{
+		Random rnd = new Random();
+		int currentSenderId = 0;
 		// mi : message item 
 		Style? miHolder, miStack, miSender, miContent;
 		private void InitApp()
@@ -24,26 +26,18 @@ namespace HesapKabardiT1
 			miContent = (Style)FindResource("MessageItemContent");
 
 			dbm.OnMessage += Dbm_OnMessage;
+
+			currentSenderId = rnd.Next(10, 100);
 		}
-		ActionInvoker actink = new ActionInvoker(new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(1) });
+
 		private void Dbm_OnMessage(string sender, string content)
 		{
-			actink.AddAction(new Action(() =>
-			{
-				if (messageHolder.Children.Count > 3)
-				{
-					dbm.StopMessageReader();
-				}
-				else
-				{
-					AddMessageItem(sender, content);
-				}
-			}));
+			AddMessageItem(sender, content);
 		}
 
 		[AllowNull]
 		private DatabaseManager dbm;
-
+		//TODO: add Room Manager
 		public ChatMenu(DatabaseManager dbm) { this.dbm = dbm; InitApp(); }
 
 		public void AddMessageItem(string user, string message)
@@ -58,11 +52,13 @@ namespace HesapKabardiT1
 			messageHolder.Children.Add(holder);
 			messageScroll.ScrollToEnd();
 		}
+
+
 		private void SendMessageIfPossible()
 		{
 			if (!string.IsNullOrEmpty(MessageContent.Text))
 			{
-				AddMessageItem("qwe", MessageContent.Text);
+				dbm.SendMessage(3, currentSenderId, MessageContent.Text);
 				MessageContent.Text = string.Empty;
 			}
 		}

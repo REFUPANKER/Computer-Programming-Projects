@@ -190,6 +190,7 @@
                                         <Label Content="Total Bet" HorizontalContentAlignment="Center" FontSize="10" Foreground="White"></Label>
                                         <Label x:Name="TotalBetLabel" Content="Player Not ready" Foreground="White" HorizontalContentAlignment="Center" FontSize="15" ></Label>
                                         <Button Style="{DynamicResource DarkThemedButton}" Click="ChatOpener_Click" x:Name="ChatOpener" Content="Chat ↗️" Foreground="White" Background="{x:Null}" Margin="5" BorderBrush="White" BorderThickness="1" FontSize="20"></Button>
+                                        <Label x:Name="WhosTurn" Content="Your Turn" Background="#FF4FBD4F" Margin="5" Foreground="White" HorizontalContentAlignment="Center" FontSize="15" FontWeight="Bold"></Label>
                                     </StackPanel>
                                 </Border>
                             </Grid>
