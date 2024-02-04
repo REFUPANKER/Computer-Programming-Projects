@@ -11,7 +11,7 @@
         ResizeMode="NoResize"
         Closing="Window_Closing"
         IsVisibleChanged="Window_IsVisibleChanged"
-        Title="Chat Room"
+        Title="Chat"
         Height="550" Width="400" Background="#151515" Foreground="White">
     <Grid>
         <Grid.RowDefinitions>
@@ -20,7 +20,12 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Label x:Name="RoomNameLabel" Foreground="White" Content="Room Name" HorizontalContentAlignment="Center" FontSize="18"></Label>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" x:Name="RoomNameLabel" Foreground="White" Content="Room Name" HorizontalContentAlignment="Center" FontSize="18"></Label>
+            <Button Grid.Column="1" x:Name="ClearChatButton" Click="ClearChatButton_Click" Style="{DynamicResource DarkThemedButton}" Background="Transparent" Foreground="White" Content="Clear" FontSize="18" Padding="10,0,10,0" BorderThickness="0"></Button>
         </Grid>
         <Grid Grid.Row="1">
             <ScrollViewer VerticalScrollBarVisibility="Auto" x:Name="messageScroll">

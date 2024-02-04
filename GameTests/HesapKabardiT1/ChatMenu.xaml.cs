@@ -1,6 +1,12 @@
-﻿using HesapKabardiT1.Managers;
+﻿using HesapKabardiT1.Items;
+using HesapKabardiT1.Managers;
+using HesapKabardiT1.Pool;
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -13,11 +19,15 @@ namespace HesapKabardiT1
 	/// </summary>
 	public partial class ChatMenu : Window
 	{
-		Random rnd = new Random();
-		int currentSenderId = 0;
+		private DatabaseManager dbm = Core.dbm;
+
+		/// <summary>
+		/// Created for synchronizing Thread with UI
+		/// </summary>
+		DispatcherTimer msgTimer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1), IsEnabled = true };
 		// mi : message item 
 		Style? miHolder, miStack, miSender, miContent;
-		private void InitApp()
+		public ChatMenu()
 		{
 			InitializeComponent();
 			miHolder = (Style)FindResource("MessageItem");
@@ -25,26 +35,15 @@ namespace HesapKabardiT1
 			miSender = (Style)FindResource("MessageItemSender");
 			miContent = (Style)FindResource("MessageItemContent");
 
-			dbm.OnMessage += Dbm_OnMessage;
-
-			currentSenderId = rnd.Next(10, 100);
+			msgTimer.Tick += MsgTimer_Tick;
 		}
 
-		private void Dbm_OnMessage(string sender, string content)
-		{
-			AddMessageItem(sender, content);
-		}
 
-		[AllowNull]
-		private DatabaseManager dbm;
-		//TODO: add Room Manager
-		public ChatMenu(DatabaseManager dbm) { this.dbm = dbm; InitApp(); }
-
-		public void AddMessageItem(string user, string message)
+		public void AddMessageItem(string? user, string message)
 		{
 			Border holder = new Border() { Style = miHolder };
 			StackPanel stack = new StackPanel() { Style = miStack };
-			Label sender = new Label() { Style = miSender, Content = user };
+			Label sender = new Label() { Style = miSender, Content = (user != null ? user : string.Empty) };
 			TextBlock content = new TextBlock() { Style = miContent, Text = message };
 			stack.Children.Add(sender);
 			stack.Children.Add(content);
@@ -52,34 +51,47 @@ namespace HesapKabardiT1
 			messageHolder.Children.Add(holder);
 			messageScroll.ScrollToEnd();
 		}
-
-
 		private void SendMessageIfPossible()
 		{
 			if (!string.IsNullOrEmpty(MessageContent.Text))
 			{
-				dbm.SendMessage(3, currentSenderId, MessageContent.Text);
+				SendMessage(3, MessageContent.Text);
 				MessageContent.Text = string.Empty;
 			}
 		}
-
-		private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+		public void SendMessage(int room, string message)
 		{
-			if (this.Visibility == Visibility.Visible)
+			dbm.RoomMessages.Add(new Items.RoomMessage() { Message = message, Room = room, Sender = 4 });
+			dbm.SaveChanges();
+		}
+
+		private int lastid = 0;
+		/// <summary>
+		/// TODO:add room metrics
+		/// </summary>
+		private void MsgTimer_Tick(object? sender, EventArgs e)
+		{
+			var GetMessages = from rm in dbm.RoomMessages
+							  join u in dbm.Users on rm.Sender equals u.ID
+							  where rm.ID > lastid && rm.Room == 3
+							  select new { RoomMessage = rm, User = u.Name };
+			foreach (var item in GetMessages)
 			{
-				dbm.StartMessageReader(1000);
+				if (item.RoomMessage.ID != null)
+				{
+					lastid = item.RoomMessage.ID.Value;
+				}
+				AddMessageItem(item.User, item.RoomMessage.Message + string.Empty);
 			}
-			else
-			{
-				dbm.StopMessageReader();
-				messageHolder.Children.Clear();
-			}
+		}
+		private void ClearChatButton_Click(object sender, RoutedEventArgs e)
+		{
+			messageHolder.Children.Clear();
 		}
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			e.Cancel = true;
-			Hide();
+			msgTimer.Stop();
 		}
 		private void SendMessageBtn_Click(object sender, RoutedEventArgs e)
 		{
@@ -90,6 +102,18 @@ namespace HesapKabardiT1
 			if (e.Key == Key.Enter)
 			{
 				SendMessageIfPossible();
+			}
+		}
+		private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (this.Visibility == Visibility.Visible)
+			{
+				msgTimer.Start();
+			}
+			else
+			{
+				msgTimer.Stop();
+				messageHolder.Children.Clear();
 			}
 		}
 	}

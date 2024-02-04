@@ -1,6 +1,8 @@
 ﻿using HesapKabardiT1.Managers;
+using HesapKabardiT1.Pool;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -23,13 +25,11 @@ namespace HesapKabardiT1
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-
-		DatabaseManager dbm = new DatabaseManager();
-		ChatMenu chatmenu;
+		//ChatMenu chatmenu = Core.wChat;
 		public MainWindow()
 		{
 			InitializeComponent();
-			chatmenu = new ChatMenu(dbm);
+			//UserManager.AddUser("testing","admin@gcom","12345");
 		}
 
 		private void AppCore_Loaded(object sender, RoutedEventArgs e)
@@ -554,14 +554,14 @@ namespace HesapKabardiT1
 
 		private void ChatOpener_Click(object sender, RoutedEventArgs e)
 		{
-			if (chatmenu.Visibility != Visibility.Visible)
-			{
-				chatmenu.Show();
-			}
-			else
-			{
-				chatmenu.Hide();
-			}
+			//if (chatmenu.Visibility != Visibility.Visible)
+			//{
+			//	chatmenu.Show();
+			//}
+			//else
+			//{
+			//	chatmenu.Hide();
+			//}
 		}
 	}
 }

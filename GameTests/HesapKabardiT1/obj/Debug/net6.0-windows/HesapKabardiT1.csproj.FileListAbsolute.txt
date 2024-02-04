@@ -29,3 +29,5 @@ C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Pr
 C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GameTests\HesapKabardiT1\obj\Debug\net6.0-windows\ChatMenu.baml
 C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GameTests\HesapKabardiT1\obj\Debug\net6.0-windows\HesapKabardiT1.csproj.CopyComplete
 C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GameTests\HesapKabardiT1\obj\Debug\net6.0-windows\App.baml
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GameTests\HesapKabardiT1\obj\Debug\net6.0-windows\GameRoomSelector.g.cs
+C:\Users\Computer\Documents\Education\GorselProgramlama2\Computer-Programming-Projects\GameTests\HesapKabardiT1\obj\Debug\net6.0-windows\GameRoomSelector.baml

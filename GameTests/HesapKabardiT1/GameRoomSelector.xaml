@@ -1,0 +1,21 @@
+﻿<Window x:Class="HesapKabardiT1.GameRoomSelector"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HesapKabardiT1"
+        mc:Ignorable="d"
+        Title="GameRoomSelector" Height="450" Width="800">
+    <Border Background="Black">
+        <Grid>
+            <Border Margin="50" BorderBrush="White" BorderThickness="1" CornerRadius="16" Padding="8">
+                <Grid>
+                    <ListBox x:Name="listBox1" Background="Black" BorderThickness="0" BorderBrush="Transparent" Foreground="White" FontSize="30">
+
+                    </ListBox>
+                </Grid>
+            </Border>
+            <Button Click="CreateRoomBtn_Click" x:Name="CreateRoomBtn" VerticalAlignment="Bottom" Height="30" Content="Create Room" Margin="50,0,0,10" HorizontalAlignment="Left"></Button>
+        </Grid>
+    </Border>
+</Window>

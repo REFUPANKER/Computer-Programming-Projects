@@ -1,13 +1,15 @@
 ﻿using HesapKabardiT1.Items;
+using HesapKabardiT1.Pool;
+using System;
 using System.Data;
+using System.Windows;
+
 namespace HesapKabardiT1.Managers
 {
 	public class UserManager
 	{
-		public User GetUserData(int id)
-		{
-			//DataTable? db = DatabaseManager.RequestQuery($"select * from User where id ={id}", true);
-			return new User(1, "qwe", "qweqwe", "123912378", 0);
-		}
+		//TODO:ADD USER AUTH
+		public static User? Player1;
+		public static User? Player2;
 	}
 }
