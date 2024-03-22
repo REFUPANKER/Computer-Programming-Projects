@@ -19,12 +19,15 @@ namespace HesapKabardiT1
 	/// </summary>
 	public partial class ChatMenu : Window
 	{
+		private int _roomid = 3;
+		public int RoomID { get => _roomid; set => _roomid = value; }
+		public string RoomName { get => RoomNameLabel.Content + ""; set => RoomNameLabel.Content = value; }
 		private DatabaseManager dbm = Core.dbm;
 
 		/// <summary>
 		/// Created for synchronizing Thread with UI
 		/// </summary>
-		DispatcherTimer msgTimer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1), IsEnabled = true };
+		DispatcherTimer msgTimer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1), IsEnabled = false };
 		// mi : message item 
 		Style? miHolder, miStack, miSender, miContent;
 		public ChatMenu()
@@ -43,7 +46,7 @@ namespace HesapKabardiT1
 		{
 			Border holder = new Border() { Style = miHolder };
 			StackPanel stack = new StackPanel() { Style = miStack };
-			Label sender = new Label() { Style = miSender, Content = (user != null ? user : string.Empty) };
+			Label sender = new Label() { Style = miSender, Content = user };
 			TextBlock content = new TextBlock() { Style = miContent, Text = message };
 			stack.Children.Add(sender);
 			stack.Children.Add(content);
@@ -55,13 +58,14 @@ namespace HesapKabardiT1
 		{
 			if (!string.IsNullOrEmpty(MessageContent.Text))
 			{
-				SendMessage(3, MessageContent.Text);
+				SendMessage(MessageContent.Text);
 				MessageContent.Text = string.Empty;
 			}
 		}
-		public void SendMessage(int room, string message)
+
+		public void SendMessage(string message)
 		{
-			dbm.RoomMessages.Add(new Items.RoomMessage() { Message = message, Room = room, Sender = 4 });
+			dbm.RoomMessages.Add(new Items.RoomMessage() { Message = message, Room = RoomID, Sender = Core.rnd.Next(1, 4) });
 			dbm.SaveChanges();
 		}
 
@@ -71,27 +75,36 @@ namespace HesapKabardiT1
 		/// </summary>
 		private void MsgTimer_Tick(object? sender, EventArgs e)
 		{
-			var GetMessages = from rm in dbm.RoomMessages
-							  join u in dbm.Users on rm.Sender equals u.ID
-							  where rm.ID > lastid && rm.Room == 3
-							  select new { RoomMessage = rm, User = u.Name };
-			foreach (var item in GetMessages)
+			Thread t1 = new Thread(() =>
 			{
-				if (item.RoomMessage.ID != null)
+				var GetMessages = from rm in dbm.RoomMessages
+								  join u in dbm.Users on rm.Sender equals u.ID
+								  where rm.ID > lastid && rm.Room == RoomID
+								  select new { Message = rm, User = u.Name };
+				Core.actinv.AddAction(() =>
 				{
-					lastid = item.RoomMessage.ID.Value;
-				}
-				AddMessageItem(item.User, item.RoomMessage.Message + string.Empty);
-			}
+					foreach (var item in GetMessages)
+					{
+						if (item.Message.ID != null)
+						{
+							lastid = item.Message.ID.Value;
+						}
+						AddMessageItem(item.User, item.Message.Message + string.Empty);
+					}
+				});
+			});
+			t1.Start();
 		}
+
 		private void ClearChatButton_Click(object sender, RoutedEventArgs e)
 		{
 			messageHolder.Children.Clear();
 		}
-
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			msgTimer.Stop();
+			e.Cancel = true;
+			this.Hide();
 		}
 		private void SendMessageBtn_Click(object sender, RoutedEventArgs e)
 		{

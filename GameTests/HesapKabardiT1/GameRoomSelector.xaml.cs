@@ -1,4 +1,5 @@
-﻿using HesapKabardiT1.Managers;
+﻿using HesapKabardiT1.Items;
+using HesapKabardiT1.Managers;
 using HesapKabardiT1.Pool;
 using System;
 using System.Collections.Generic;
@@ -25,36 +26,92 @@ namespace HesapKabardiT1
 	public partial class GameRoomSelector : Window
 	{
 		DispatcherTimer timer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1), IsEnabled = true };
-		DatabaseManager dbm = Core.dbm;
 		public GameRoomSelector()
 		{
 			InitializeComponent();
-
 			timer.Tick += Timer_Tick;
-
-			//dbm.Users.Add(new Items.User("Testing", "EF@gcom", "qwe123"));
-			//dbm.SaveChanges();
 		}
 
-		//DatabaseManager dbm = Core.dbm;
-		//List<Action> actx = new List<Action>();
-		int lastid = 0;
+		int lastSelected = -1;
 		private void Timer_Tick(object? sender, EventArgs e)
 		{
-			var GetRooms = dbm.GameRooms.Select(x => x).Where(x => x.ID > lastid).ToList();
+			if (listBox1.SelectedIndex >= 0)
+			{
+				lastSelected = listBox1.SelectedIndex;
+			}
+			listBox1.Items.Clear();
+			var GetRooms = from gr in Core.dbm.GameRooms
+						   where gr.Player2 != null && gr.Player2.Value == -1
+						   select gr;
 			foreach (var item in GetRooms)
 			{
-				if (item.ID != null)
-				{
-					lastid = item.ID.Value;
-				}
-				listBox1.Items.Add(item.ID+"\t| "+item.Name + " - " + item.Turn );
+				listBox1.Items.Add(item);
+			}
+			if (listBox1.Items.Count > lastSelected)
+			{
+				listBox1.SelectedIndex = lastSelected;
 			}
 		}
 
 		private void CreateRoomBtn_Click(object sender, RoutedEventArgs e)
 		{
-			//DatabaseManager.RequestQuery("insert into GameRooms (name,p1) values ('ROOM',1)");
+			string roomname = "";
+			if (string.IsNullOrEmpty(GameRoomName.Text))
+			{
+				if (MessageBox.Show("Would you want to use auto created name?", "Create Game Room", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+				{
+					roomname = Core.RandomName_GameRoom(10);
+				}
+				else
+				{
+					return;
+				}
+			}
+			else
+			{
+				roomname = GameRoomName.Text;
+			}
+			Core.wChat.RoomName = roomname;
+			Core.dbm.GameRooms.Add(new Items.Room() { Name = roomname, Player1 = 4, Player2 = null });
+			Core.dbm.SaveChanges();
+		}
+
+		private void GameRoomSelectorWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			timer.Stop();
+		}
+
+		private void GameRoomSelectorWindow_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (this.Visibility == Visibility.Visible)
+			{
+				timer.Start();
+			}
+			else
+			{
+				timer.Stop();
+			}
+		}
+
+		Room? SelectedRoom;
+		private void listBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			try { SelectedRoom = (Room)listBox1.Items[listBox1.SelectedIndex]; } catch { }
+		}
+
+		private void JoinRoom_Click(object sender, RoutedEventArgs e)
+		{
+			if (SelectedRoom!=null)
+			{
+				if (MessageBox.Show($"Confirm Room\n{SelectedRoom.ToString()}?", "Join to Game Room", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+				{
+					MessageBox.Show("Conntected to\n" + SelectedRoom.Name);
+				}
+			}
+			else
+			{
+				MessageBox.Show("Select room");
+			}
 		}
 	}
 }

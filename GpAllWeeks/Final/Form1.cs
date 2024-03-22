@@ -28,7 +28,6 @@ namespace Final
 			int range = ((int)this.Font.Size);
 			logEvent.Height = this.Height - range;
 			logEvent.Top = this.Top;
-			logEvent.BringToFront();
 			if ((this.Left - logEvent.Width) + range < 0)
 			{
 				logEvent.Left = this.Right - range;

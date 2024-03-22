@@ -639,9 +639,9 @@
 			// 
 			this.tabPage3.Controls.Add(this.button13);
 			this.tabPage3.Controls.Add(this.button12);
-			this.tabPage3.Location = new System.Drawing.Point(4, 32);
+			this.tabPage3.Location = new System.Drawing.Point(4, 25);
 			this.tabPage3.Name = "tabPage3";
-			this.tabPage3.Size = new System.Drawing.Size(689, 64);
+			this.tabPage3.Size = new System.Drawing.Size(689, 71);
 			this.tabPage3.TabIndex = 2;
 			this.tabPage3.Text = "Ek Sayfalar";
 			this.tabPage3.UseVisualStyleBackColor = true;
@@ -654,7 +654,7 @@
 			this.button13.Location = new System.Drawing.Point(237, 0);
 			this.button13.Margin = new System.Windows.Forms.Padding(10);
 			this.button13.Name = "button13";
-			this.button13.Size = new System.Drawing.Size(266, 64);
+			this.button13.Size = new System.Drawing.Size(266, 71);
 			this.button13.TabIndex = 1;
 			this.button13.Text = "Timer Kullanım Örneği";
 			this.button13.UseVisualStyleBackColor = false;
@@ -668,7 +668,7 @@
 			this.button12.Location = new System.Drawing.Point(0, 0);
 			this.button12.Margin = new System.Windows.Forms.Padding(10);
 			this.button12.Name = "button12";
-			this.button12.Size = new System.Drawing.Size(237, 64);
+			this.button12.Size = new System.Drawing.Size(237, 71);
 			this.button12.TabIndex = 0;
 			this.button12.Text = "Hakkında Sayfası";
 			this.button12.UseVisualStyleBackColor = false;

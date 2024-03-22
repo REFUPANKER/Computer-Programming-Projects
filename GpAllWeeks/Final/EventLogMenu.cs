@@ -16,10 +16,7 @@ namespace Final
 			{
 				listBox1.Items.RemoveAt(0);
 			}
-			else
-			{
-				this.Width = 0;
-			}
+			
 		}
 		private void ResizeByLongestItem()
 		{

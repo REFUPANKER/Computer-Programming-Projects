@@ -5,17 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HesapKabardiT1"
         mc:Ignorable="d"
-        Title="GameRoomSelector" Height="450" Width="800">
-    <Border Background="Black">
+        Title="GameRoomSelector" Height="500" Width="800" x:Name="GameRoomSelectorWindow" Closing="GameRoomSelectorWindow_Closing" IsVisibleChanged="GameRoomSelectorWindow_IsVisibleChanged">
+    <Border Background="#050505">
         <Grid>
-            <Border Margin="50" BorderBrush="White" BorderThickness="1" CornerRadius="16" Padding="8">
-                <Grid>
-                    <ListBox x:Name="listBox1" Background="Black" BorderThickness="0" BorderBrush="Transparent" Foreground="White" FontSize="30">
-
-                    </ListBox>
-                </Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Margin="20,10" Background="#101010" BorderBrush="White" BorderThickness="1" CornerRadius="16" Padding="8">
+                <ListBox x:Name="listBox1" SelectionChanged="listBox1_SelectionChanged" Background="#101010" BorderThickness="0" BorderBrush="Transparent" Foreground="White" FontSize="30"/>
             </Border>
-            <Button Click="CreateRoomBtn_Click" x:Name="CreateRoomBtn" VerticalAlignment="Bottom" Height="30" Content="Create Room" Margin="50,0,0,10" HorizontalAlignment="Left"></Button>
+            <Border Grid.Row="1" Margin="20,0,20,10" Padding="10,5,10,5" CornerRadius="8,8,0,0" Background="#101010" BorderBrush="White" BorderThickness="1">
+                <DockPanel >
+                    <Button Click="CreateRoomBtn_Click" x:Name="CreateRoomBtn" Style="{DynamicResource DarkThemedButton}" Background="#202020" BorderBrush="#454545" BorderThickness="1" Foreground="White" VerticalAlignment="Bottom" Content="Create Room" Padding="10" HorizontalAlignment="Left"></Button>
+                    <TextBox x:Name="GameRoomName" Width="250" Margin="5,0" ToolTip="Room Name" Background="#202020" Foreground="White" BorderBrush="#454545" BorderThickness="1" FontSize="25" VerticalContentAlignment="Center"  Text=""></TextBox>
+                    <Button Click="JoinRoom_Click" x:Name="JoinRoom" HorizontalAlignment="Right" Style="{DynamicResource DarkThemedButton}" Background="#202020" BorderBrush="#454545" BorderThickness="1" Foreground="White" VerticalAlignment="Bottom" Content="Join Game" Padding="10"></Button>
+                </DockPanel>
+            </Border>
         </Grid>
     </Border>
 </Window>
